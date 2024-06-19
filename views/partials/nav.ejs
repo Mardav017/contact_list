@@ -1,0 +1,51 @@
+<nav class="py-4 px-5 bg-gray-300 flex justify-between mb-5">
+  <a href="/"><img src="/Mardav_logo.png" alt="" width="110px" /></a>
+  <div class="flex gap-10">
+    <section class="flex">
+      <input
+        type="text"
+        id="search-contact"
+        placeholder="Search"
+        class="border border-gray-500 px-2 py-px w-40 rounded-l-lg"
+      />
+      <button class="search border border-gray-500 rounded-e-lg px-1">
+        <span class="material-symbols-outlined text-base">search</span>
+      </button>
+    </section>
+    <a class="group" href="/">Home
+      <div class="bg-blue-900 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
+    </a>
+    <a href="/contact/create" class="group">Create New Contact
+      <div class="bg-blue-900 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
+    </a>
+    <a href="/about" class="group">About
+      <div class="bg-blue-900 h-[2px] w-0 group-hover:w-full transition-all duration-500"></div>
+    </a>
+  </div>
+</nav>
+
+<script>
+  const searchText = document.getElementById("search-contact");
+  const searchBtn = document.querySelector(".search");
+  let url = "/contact/search/";
+
+  searchBtn.addEventListener("click", () => {
+    if (!searchText.value == "") {
+      url = url + searchText.value;
+      window.location.href = url;
+    } else {
+      searchText.focus();
+    }
+  });
+
+  searchText.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+      if (!searchText.value == "") {
+        url = url + searchText.value;
+        window.location.href = url;
+      } else {
+        searchText.focus();
+      }
+    }
+  });
+</script>

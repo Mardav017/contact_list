@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head') %>
+  <body class="bg-white">
+    <div class="min-h-svh">
+      <%- include('./partials/nav') %> 
+      <% if(data==null){var data = {_id:'',name:'',phone_no:'',email:'',address:'',description:''}}%>
+      
+
+      <form class="form flex items-center justify-center">
+        <section class="shadow-md py-5 px-10 border-gray-200 border-[1.5px]">
+          <table class="text-left">
+            <tr>
+              <td colspan="2" class="text-center">
+                <h1 class="text-xl">Add Contact</h1>
+              </td>
+            </tr>
+            <tr>
+              <th>Name:</th>
+              <td>
+                <input
+                  type="text"
+                  class="border-gray-200 border-[1.5px]"
+                  name="name"
+                  required
+                  placeholder="Enter Full Name"
+                  value="<%=data.name%>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Phone No:</th>
+              <td>
+                <input
+                  type="text"
+                  class="border-gray-200 border-[1.5px]"
+                  name="phone_no"
+                  required
+                  placeholder="Enter phone no"
+                  value="<%=data.phone_no%>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Email:</th>
+              <td>
+                <input
+                  type="text"
+                  class="border-gray-200 border-[1.5px]"
+                  name="email"
+                  placeholder="Enter email"
+                  value="<%=data.email%>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Address:</th>
+              <td>
+                <input
+                  type="text"
+                  class="border-gray-200 border-[1.5px]"
+                  name="address"
+                  placeholder="Enter address"
+                  value="<%=data.address%>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>Description:</th>
+              <td>
+                <input
+                  type="text"
+                  class="border-gray-200 border-[1.5px]"
+                  name="description"
+                  placeholder="Enter description"
+                  value="<%=data.description%>"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center">
+                <button
+                  type="submit"
+                  class="bg-purple-900 p-1 text-sm w-12 text-white rounded-lg mt-5"
+                >
+                  Add
+                </button>
+              </td>
+            </tr>
+          </table>
+        </section>
+      </form>
+    </div>
+
+    <br /><%- include('./partials/footer') %>
+
+    <script>
+      const form = document.querySelector(".form");
+
+      var serverData = `<%- JSON.stringify(data) %>`;
+      serverData = JSON.parse(serverData);
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        var form_data = Object.fromEntries(formData);
+
+        var method = "POST";
+        var url = "/contact/save";
+        if (serverData._id) {
+          method = "PUT";
+          url += '/' + serverData._id;
+        }
+
+        fetch(url, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form_data),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            window.location.href = data.redirect;
+          })
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>

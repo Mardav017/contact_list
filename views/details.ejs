@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head') %>
+  <body class="">
+    <%- include('./partials/nav') %>
+    <div class="p-5 text-left mx-5 min-h-[70vh] flex justify-between">
+      <section>
+        <table>
+          <tr>
+            <th>Name:</th>
+            <td class="pl-5"><%=data.name%></td>
+          </tr>
+          <tr>
+            <th>Contact No.:</th>
+            <td class="pl-5"><%=data.phone_no%></td>
+          </tr>
+          <tr>
+            <th>Email:</th>
+            <td class="pl-5"><%=data.email%></td>
+          </tr>
+          <tr>
+            <th>Address:</th>
+            <td colspan="10" class="pl-5"><%=data.address%></td>
+          </tr>
+          <tr>
+            <th>Description:</th>
+            <td colspan="10" class="pl-5"><%=data.description%></td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <button type="button" data-doc="<%=data._id%>" class="edit-btn">
+          <span class="material-symbols-outlined cursor-pointer">edit</span>
+        </button>
+        <button type="button" data-doc="<%=data._id%>" class="delete-btn">
+          <span class="material-symbols-outlined">delete</span>
+        </button>
+      </section>
+    </div>
+    <br /><%- include('./partials/footer') %>
+
+    <script>
+      const deleteBtn = document.querySelector(".delete-btn");
+      const editBtn = document.querySelector(".edit-btn");
+
+      deleteBtn.addEventListener("click", () => {
+        const endpoint = `/contact/${deleteBtn.dataset.doc}`;
+
+        fetch(endpoint, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            window.location.href = data.redirect;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      editBtn.addEventListener("click", () => {
+        window.location.href = `/contact/edit/${editBtn.dataset.doc}`;
+      });
+    </script>
+  </body>
+</html>

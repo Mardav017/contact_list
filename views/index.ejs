@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head') %>
+  <body class="bg-white min-h-svh">
+    <div>
+      <%- include('./partials/nav') %>
+      <h1 class="text-2xl font-semibold mx-8"><%=heading%></h1>
+      <% if(data){ data.forEach(item => {%>
+
+      <div
+        class="text-left text-sm mx-5 rounded-lg shadow-lg flex justify-between"
+      >
+        <a href="../../contact/detail/<%= item._id %>" class="p-5 w-full">
+          <table class="border-l-4 border-gray-300">
+            <tr class="mx-5">
+              <th class="pl-2"><%=item.name%></th>
+            </tr>
+            <tr>
+              <td class="font-semibold pl-2">
+                <%=item.phone_no%>, <%=item.email%>
+              </td>
+            </tr>
+          </table>
+        </a>
+        <div class="py-7 w-[8%] flex gap-5">
+          <button type="button" data-doc="<%=item._id%>" class="edit-btn">
+            <span class="material-symbols-outlined cursor-pointer">edit</span>
+          </button>
+          <button type="button" data-doc="<%=item._id%>" class="delete-btn">
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+      <%})}%>
+    </div>
+
+    <br /><%- include('./partials/footer') %>
+
+    <script>
+      const deleteBtn = document.querySelectorAll(".delete-btn");
+      const editBtn = document.querySelectorAll(".edit-btn");
+
+      deleteBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const endpoint = `/contact/${btn.dataset.doc}`;
+
+          fetch(endpoint, {
+            method: "DELETE",
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              window.location.href = data.redirect;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
+      });
+
+      editBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          window.location.href = `/contact/edit/${btn.dataset.doc}`;
+        });
+      });
+    </script>
+  </body>
+</html>

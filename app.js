@@ -17,8 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-// const dbURI = "mongodb://localhost:27017/demo";
-const dbURI = "mongodb+srv://mardav07:mardav12345@contact-list.it9pvqt.mongodb.net/?retryWrites=true&w=majority&appName=contact-list";
+const dbURI = "mongodb://localhost:27017/demo";
 
 mongoose
   .connect(dbURI)

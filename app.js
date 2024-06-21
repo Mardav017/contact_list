@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
@@ -8,7 +10,7 @@ const contactRoutes = require("./routes/contactRoutes");
 
 // Express app
 const app = express();
-const PORT = 3333;
+const PORT = process.env.PORT;
 
 // Middleware
 app.set("view engine", "ejs");
@@ -17,7 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-const dbURI = "mongodb://localhost:27017/demo";
+// const dbURI = "mongodb://localhost:27017/demo";
+const dbURI = process.env.dbURI;
 
 mongoose
   .connect(dbURI)
@@ -27,7 +30,7 @@ mongoose
 // Session
 app.use(
   session({
-    secret: "mardav",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({

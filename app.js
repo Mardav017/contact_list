@@ -1,10 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Contact = require("./models/contact");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+const userRoutes = require("./routes/userRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 // Express app
 const app = express();
-const PORT = process.env.PORT || 3333;
+const PORT = 3333;
 
 // Middleware
 app.set("view engine", "ejs");
@@ -19,107 +23,42 @@ mongoose
   .then(() => console.log("Connected to Database"))
   .catch((err) => console.log(err));
 
-// Routes
-app.get("/", (req, res) => {
-  Contact.find()
-    .sort({ name: 1 })
-    .then((result) => {
-      res.render("index", { title: "Home", heading: `Contact List`,data: result });
-    })
-    .catch((err) => {
-      console.error("Error fetching contacts:", err);
-    });
-});
-
-app.get("/contact/search/:text", (req, res) => {
-  const text = req.params.text;
-  Contact.find({
-    name: new RegExp(text, "i"),
+// Session
+app.use(
+  session({
+    secret: "mardav",
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: dbURI,
+    }),
+    cookie: { maxAge: 180 * 60 * 1000 }, // 3 hours
   })
-    .then((result) => {
-      res.render("index", {
-        title: `Search Result for ${text}`,
-        heading: `Search Result for ${text}`,
-        data: result,
-      });
-    })
-    .catch((err) => {
-      res.render("index", {
-        title: `Search Result for ${text}`,
-        heading: `No Result found for ${text}`
-      });
-      console.error("Error fetching contacts:", err);
-    });
-});
-app.post("/contact/save", (req, res) => {
-  const contactModel = new Contact(req.body);
-  contactModel
-    .save()
-    .then(() => {
-      res.json({ redirect: "/" });
-    })
-    .catch((err) => {
-      console.error("Error saving contact:", err);
-    });
+);
+
+app.use((req, res, next) => {
+  res.locals.userId = req.session.userId;
+  next();
 });
 
-app.put("/contact/save/:id", (req, res) => {
-  const id = req.params.id;
-  Contact.findByIdAndUpdate(id, req.body, { new: true })
-    .then((result) => {
-      if (!result) {
-        return res.send("Contact not found");
-      }
-      res.json({ redirect: "/" });
-    })
-    .catch((err) => {
-      console.error("Error updating contact:", err);
-    });
-});
+const authMiddleware = (req, res, next) => {
+  if (!req.session.userId) {
+    return res.redirect("/user/login");
+  }
+  next();
+};
 
-app.get("/contact/create", (req, res) => {
-  res.render("form", { title: "Create Contact" });
-});
+// Routes
 
-app.get("/contact/edit/:id", (req, res) => {
-  const id = req.params.id;
-  Contact.findById(id)
-    .then((result) => {
-      if (!result) {
-        return res.send("Contact not found");
-      }
-      res.render("form", { title: "Edit Contact", data: result });
-    })
-    .catch((err) => {
-      res.status(404).render("404", { title: "Contact Not Found" });
-      console.error("Error finding contact by id:", err);
-    });
-});
+//contact routes
+app.use("/contact", authMiddleware, contactRoutes);
 
-app.get("/contact/detail/:id", (req, res) => {
-  const id = req.params.id;
-  Contact.findById(id)
-    .then((result) => {
-      if (!result) {
-        return res.send("Contact not found");
-      }
-      res.render("details", { title: "Details", data: result });
-    })
-    .catch((err) => {
-      res.status(404).render("404", { title: "Contact Not Found" });
-      console.error("Error fetching contact details:", err);
-    });
-});
+//user routes
+app.use("/user", userRoutes);
 
-app.delete("/contact/:id", (req, res) => {
-  const id = req.params.id;
-  Contact.findByIdAndDelete(id)
-    .then(() => {
-      res.json({ redirect: "/" });
-    })
-    .catch((err) => {
-      console.error("Error deleting contact:", err);
-    });
+app.get("/", (req, res) => {
+  // res.send('Hello World');
+  res.redirect("/contact");
 });
 
 app.get("/about", (req, res) => {

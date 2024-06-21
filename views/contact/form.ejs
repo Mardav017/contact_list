@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head') %>
+  <%- include('../partials/head') %>
   <body class="bg-white">
     <div class="min-h-svh">
-      <%- include('./partials/nav') %> 
+      <%- include('../partials/nav') %> 
       <% if(data==null){var data = {_id:'',name:'',phone_no:'',email:'',address:'',description:''}}%>
       
 
@@ -83,7 +83,7 @@
                   type="submit"
                   class="bg-purple-900 p-1 text-sm w-12 text-white rounded-lg mt-5"
                 >
-                  Add
+                  Save
                 </button>
               </td>
             </tr>
@@ -92,7 +92,7 @@
       </form>
     </div>
 
-    <br /><%- include('./partials/footer') %>
+    <br /><%- include('../partials/footer') %>
 
     <script>
       const form = document.querySelector(".form");

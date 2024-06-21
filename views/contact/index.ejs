@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <%- include('./partials/head') %>
+  <%- include('../partials/head') %>
   <body class="bg-white min-h-svh">
     <div>
-      <%- include('./partials/nav') %>
+      <%- include('../partials/nav') %>
       <h1 class="text-2xl font-semibold mx-8"><%=heading%></h1>
       <% if(data){ data.forEach(item => {%>
 
@@ -34,7 +34,7 @@
       <%})}%>
     </div>
 
-    <br /><%- include('./partials/footer') %>
+    <br /><%- include('../partials/footer') %>
 
     <script>
       const deleteBtn = document.querySelectorAll(".delete-btn");

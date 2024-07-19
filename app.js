@@ -56,7 +56,6 @@ app.use("/contact", authMiddleware, contactRoutes);
 app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
-  // res.send('Hello World');
   res.redirect("/contact");
 });
 

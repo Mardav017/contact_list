@@ -19,8 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Database connection
-const dbURI = "mongodb://localhost:27017/demo";
-// const dbURI = process.env.dbURI;
+// const dbURI = "mongodb://localhost:27017/demo";
+const dbURI = process.env.dbURI;
 
 // Session 
 app.use(

@@ -1,4 +1,5 @@
 const Contact = require("../models/contact");
+const mongoose = require("mongoose");
 
 const contact_index = (req, res) => {
   Contact.find({
@@ -88,6 +89,10 @@ const contact_edit = (req, res) => {
 
 const contact_detail = (req, res) => {
   const id = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send("No such Workout");
+  }
+
   Contact.findById(id)
     .then((result) => {
       if (!result) {

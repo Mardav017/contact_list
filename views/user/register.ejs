@@ -2,68 +2,71 @@
 <html lang="en">
   <%- include('../partials/head') %>
   <body class="h-svh">
-    <%- include('../partials/nav') %>
+    <div
+      class="flex justify-end h-screen"
+      style="
+        background-image: url('/b-4c.jpg');
+        background-repeat: no-repeat;
+        background-position: left bottom 20%;
+        background-size:60%;
+      "
+    >
+      <form
+        action="/user/login"
+        method="POST"
+        class="w-[45%] bg-white flex flex-col p-10 px-16"
+      >
+        <h1 class="text-4xl font-bold">Register</h1>
+        <p class="mt-3 text-gray-400">
+          Register yourself to use Contact Management App
+        </p>
+        <div class="flex flex-col mt-10 gap-2">
+          <p>Username:</p>
 
-    <div align="center">
-      <form action="/user/register" method="POST">
-        <table>
-          <tr>
-            <th>Username:</th>
-            <td>
-              <input
-                class="bg-gray-200 rounded-md border border-gray-300"
-                type="text"
-                name="username"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Email:</th>
-            <td>
-              <input
-                class="bg-gray-200 rounded-md border border-gray-300"
-                type="email"
-                name="email"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Password:</th>
-            <td>
-              <input
-                class="bg-gray-200 rounded-md border border-gray-300"
-                type="password"
-                name="password"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <input
-                class="bg-gray-300 hover:bg-gray-400 px-2 cursor-pointer rounded-md border border-gray-400"
-                type="submit"
-                value="Register"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="text-center">
-              Already have Account?
-              <a href="../user/login"
-                ><button
-                  type="button"
-                  class="bg-gray-300 hover:bg-gray-400 px-2 rounded-md border border-gray-400"
-                >
-                  Login
-                </button></a
-              >
-            </td>
-          </tr>
-        </table>
+          <input
+            class="rounded-md border-2 p-[4px] border-gray-300"
+            type="text"
+            name="username"
+          />
+          <p>Email:</p>
+
+          <input
+            class="rounded-md border-2 p-[4px] border-gray-300"
+            type="email"
+            name="email"
+          />
+
+          <p>Password:</p>
+
+          <input
+            class="rounded-md border-2 p-[4px] border-gray-300"
+            type="password"
+            name="password"
+          />
+
+          <input
+            class="bg-gray-300 hover:bg-gray-600 hover:text-white px-2 cursor-pointer rounded-md border border-gray-400 mt-4 p-[4px]"
+            type="submit"
+            value="Register"
+          />
+
+          <p class="mt-16 text-gray-400">
+            <b>Already a User ?</b>
+            <a href="../user/login" class="w-fit hover:text-blue-600">
+              <button type="button">Login In</button>
+            </a>
+          </p>
+        </div>
       </form>
     </div>
-
-    <br /><%- include('../partials/footer') %>
+    <script>
+      // Get the URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      // Check if the 'error' parameter is present
+      if (urlParams.has("error") && urlParams.get("error") === "invalid") {
+        // Display the error message
+        alert("Invalid username or password");
+      }
+    </script>
   </body>
 </html>

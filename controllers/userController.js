@@ -13,14 +13,32 @@ const user_login_get = (req, res) => {
 
 const user_login_post = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-
-  if (user && (await bcrypt.compare(password, user.password))) {
-    req.session.userId = user._id;
-    return res.redirect("/contact");
+  const emptyFields = [];
+  if (!username) {
+    emptyFields.push("username");
+  }
+  if (!password) {
+    emptyFields.push("password");
+  }
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill in all the fields", emptyFields });
   }
 
-  res.redirect("/user/login?error=invalid");
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "User does not exist", invalid: "username" });
+  }
+  if (user && (await bcrypt.compare(password, user.password))) {
+    req.session.userId = user._id;
+    return res.json({ redirect: "/contact" });
+  }
+
+  res.status(400).json({ error: "Incorrect password", invalid: "password" });
 };
 
 const user_register_get = (req, res) => {
@@ -29,13 +47,36 @@ const user_register_get = (req, res) => {
 
 const user_register_post = async (req, res) => {
   const { username, email, password } = req.body;
+  const emptyFields = [];
+  if (!username) {
+    emptyFields.push("username");
+  }
+  if (!email) {
+    emptyFields.push("email");
+  }
+  if (!password) {
+    emptyFields.push("password");
+  }
+  if (emptyFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: "Please fill in all the fields", emptyFields });
+  }
+
+  const user =
+    (await User.findOne({ username })) || (await User.findOne({ email }));
+  if (user) {
+    return res
+      .status(400)
+      .json({ error: "User already exists", invalid: "username" });
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   const userModel = new User({ username, email, password: hashedPassword });
 
   userModel
     .save()
     .then(() => {
-      res.redirect("/user/login");
+      res.json({ redirect: "/user/login" });
     })
     .catch((err) => console.log(err));
 };

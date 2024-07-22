@@ -1,93 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('../partials/head') %>
-  <body class="bg-white">
-    <div class="min-h-svh">
-      <%- include('../partials/nav') %> 
-      <% if(data==null){var data = {_id:'',name:'',phone_no:'',email:'',address:'',description:''}}%>
-      
+  <body class="bg-white h-screen">
+    <div class="">
+      <%- include('../partials/nav') %> <% if(data==null){var data =
+      {_id:'',name:'',phone_no:'',email:'',address:'',description:''}}%>
 
       <form class="form flex items-center justify-center">
-        <section class="shadow-md py-5 px-10 border-gray-200 border-[1.5px]">
-          <table class="text-left">
-            <tr>
-              <td colspan="2" class="text-center">
-                <h1 class="text-xl">Add Contact</h1>
-              </td>
-            </tr>
-            <tr>
-              <th>Name:</th>
-              <td>
-                <input
-                  type="text"
-                  class="border-gray-200 border-[1.5px]"
-                  name="name"
-                  required
-                  placeholder="Enter Full Name"
-                  value="<%=data.name%>"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>Phone No:</th>
-              <td>
-                <input
-                  type="text"
-                  class="border-gray-200 border-[1.5px]"
-                  name="phone_no"
-                  required
-                  placeholder="Enter phone no"
-                  value="<%=data.phone_no%>"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>Email:</th>
-              <td>
-                <input
-                  type="text"
-                  class="border-gray-200 border-[1.5px]"
-                  name="email"
-                  placeholder="Enter email"
-                  value="<%=data.email%>"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>Address:</th>
-              <td>
-                <input
-                  type="text"
-                  class="border-gray-200 border-[1.5px]"
-                  name="address"
-                  placeholder="Enter address"
-                  value="<%=data.address%>"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>Description:</th>
-              <td>
-                <input
-                  type="text"
-                  class="border-gray-200 border-[1.5px]"
-                  name="description"
-                  placeholder="Enter description"
-                  value="<%=data.description%>"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" class="text-center">
-                <button
-                  type="submit"
-                  class="bg-purple-900 p-1 text-sm w-12 text-white rounded-lg mt-5"
-                >
-                  Save
-                </button>
-              </td>
-            </tr>
-          </table>
+        <section
+          class="shadow-md py-5 px-10 rounded-xl w-[50%] h-[70vh] bg-blue-100"
+        >
+          <h1 class="text-3xl text-center font-semibold">Contact Form</h1>
+          <div class="flex flex-col px-20 gap-px justify-center">
+            <p class="text-sm">Name:</p>
+            <input
+            type="text"
+            class="p-[2px] rounded-md border-2 border-blue-300 pl-2"
+            name="name"
+            required
+            placeholder="Enter Full Name"
+            value="<%=data.name%>"
+            />
+            
+            <p class="text-sm">Phone Number:</p>
+            <input
+            type="text"
+            class="p-[2px] rounded-md border-2 border-blue-300 pl-2"
+            name="phone_no"
+            required
+            placeholder="Enter phone no"
+            value="<%=data.phone_no%>"
+            />
+            
+            <p class="text-sm">Email:</p>
+            <input
+            type="text"
+            class="p-[2px] rounded-md border-2 border-blue-300 pl-2"
+            name="email"
+            placeholder="Enter email"
+            value="<%=data.email%>"
+            />
+            
+            <p class="text-sm">Address:</p>
+            <input
+            type="text"
+            class="p-[2px] rounded-md border-2 border-blue-300 pl-2"
+            name="address"
+            placeholder="Enter address"
+            value="<%=data.address%>"
+            />
+            
+            <p class="text-sm">Description:</p>
+            <input
+              type="text"
+              class="p-[2px] rounded-md border-2 border-blue-300 pl-2"
+              name="description"
+              placeholder="Enter description"
+              value="<%=data.description%>"
+            />
+
+            <button
+              type="submit"
+              class="bg-purple-900 hover:bg-purple-700 p-2 text-sm text-white rounded-lg mt-5"
+            >
+              Save
+            </button>
+          </div>
         </section>
       </form>
     </div>
@@ -110,7 +88,7 @@
         var url = "/contact/save";
         if (serverData._id) {
           method = "PUT";
-          url += '/' + serverData._id;
+          url += "/" + serverData._id;
         }
 
         fetch(url, {
